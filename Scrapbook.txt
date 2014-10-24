@@ -1,0 +1,20 @@
+import numpy as np
+from math import *
+
+def DFT_matrix(N):
+    i, j = np.meshgrid(np.arange(N), np.arange(N))
+    omega = np.exp( - 2 * pi * 1J / N )
+    W = np.power( omega, i * j ) / sqrt(N)
+    return W
+
+def DFT_matrix_2d(N):
+    i, j = np.meshgrid(np.arange(N), np.arange(N))
+    A=np.multiply.outer(i.flatten(), i.flatten())
+    B=np.multiply.outer(j.flatten(), j.flatten())
+    omega = np.exp(-2*np.pi*1J/N)
+    W = np.power(omega, A+B)/N
+    return W
+
+def DFT_item_2d(i, j, N):
+    angle = 2*np.pi*((i%N)*(j%N)+(i/N)*(j/N))/N
+    return np.exp(-1J*angle)/N

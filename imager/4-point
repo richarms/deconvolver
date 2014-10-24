@@ -1,0 +1,15 @@
+DIR="$( cd "$( dirname "$0" )" && pwd )"
+cd "$DIR"
+export TARGET=imager
+./${TARGET} create blank.out 100 100
+./${TARGET} create mask.out 51 100
+./${TARGET} add blank.out img.out 35 24 2
+./${TARGET} add img.out img.out 28 89 3
+./${TARGET} add img.out img.out 54 63 4
+./${TARGET} add img.out img.out 50 46 5
+./${TARGET} transform img.out uv.out 
+./${TARGET} noise uv.out uv_n.out 0
+./${TARGET} add_circ mask.out mask.out 25 50 10 1
+./${TARGET} mask uv_n.out vis.out mask.out
+./${TARGET} dirty vis.out dirty.out
+#./${TARGET} diff vis.out test.out
