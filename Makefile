@@ -1,38 +1,39 @@
-CUDA_INSTALL_PATH ?= /usr/local/cuda
+#CUDA_INSTALL_PATH ?= /usr/local/cuda
 
 CXX := g++ -g
 CC := gcc
 LINK := g++ -fPIC
-NVCC  := $(CUDA_INSTALL_PATH)/bin/nvcc -ccbin /usr/bin
+#NVCC  := $(CUDA_INSTALL_PATH)/bin/nvcc -ccbin /usr/bin
 
 # Includes
-INCLUDES = -I. -I$(CUDA_INSTALL_PATH)/include
+INCLUDES = -I.
+#INCLUDES = -I. -I$(CUDA_INSTALL_PATH)/include
 
 # Common flags
 CXXFLAGS = -Wall -std=c++0x -O2
-NVCCFLAGS = -Xcompiler -O2 -gencode=arch=compute_35,code=sm_35
+#NVCCFLAGS = -Xcompiler -O2 -gencode=arch=compute_35,code=sm_35
 DEFINES = 
 LIBS = -lgomp -fopenmp -lfftw3 -lm -llapack -lblas
 COMMONFLAGS = $(LIBS) $(DEFINES) $(INCLUDES)
-NVCCFLAGS += $(COMMONFLAGS)
+#NVCCFLAGS += $(COMMONFLAGS)
 CXXFLAGS += $(COMMONFLAGS)
 CFLAGS += $(COMMONFLAGS)
 
-LIB_CUDA := -L$(CUDA_INSTALL_PATH)/lib64 -lcudart -lcufft -lcublas -lcufftw
+#LIB_CUDA := -L$(CUDA_INSTALL_PATH)/lib64 -lcudart -lcufft -lcublas -lcufftw
 
 # Project Specific things
 OBJS = main.cpp deconvolver.o imager/image.o timer.o
 TARGET = deconvolve
-LINKLINE = $(LINK) $(DEFINES) $(INCLUDES) $(LIB_CUDA) -o $(TARGET) $(OBJS) $(LIBS)
-
+LINKLINE = $(LINK) $(DEFINES) $(INCLUDES) -o $(TARGET) $(OBJS) $(LIBS)
+#$(LIB_CUDA)
 
 .SUFFIXES: .c .cpp .cu .o
 
 %.c.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-%.cu.o: %.cu
-	$(NVCC) $(NVCCFLAGS) -c $< -o $@
+#%.cu.o: %.cu
+#	$(NVCC) $(NVCCFLAGS) -c $< -o $@
 
 %.cpp.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
